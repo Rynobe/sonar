@@ -12,7 +12,7 @@ SONARQUBE_ENV_CONFIG = {
 
 parser = argparse.ArgumentParser(description='SonarQube permission script parameters.')
 parser.add_argument('sonarqube_auth_token', type=str, help='Technical user token with admin privileges.')
-parser.add_argument('--projects_name', type=str, help='List of project(s) name. Separated by comma or space.')
+parser.add_argument('--project_names', type=str, help='List of project(s) name. Separated by comma or space.')
 parser.add_argument('--ro_emails', type=str, help=f'List of email addresses of the users to add to the RO group. Separated by comma or space.')
 parser.add_argument('--rw_emails', type=str, help=f'List of email addresses of the users to add to the RO group. Separated by comma or space.')
 
