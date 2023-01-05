@@ -51,9 +51,9 @@ def set_permission():
             rw_users = sonarqube.get_user_login_names(rw_users)
             projects = sonarqube.get_project_names(projects)
             
-            if rw:
+            if ro_users:
                 sonarqube.set_user_permission(rw_users,projects,"rw")
-            if ro:
+            if rw_users:
                 sonarqube.set_user_permission(ro_users,projects,"ro")
                 
     except Exception as e:
