@@ -3,15 +3,14 @@
 pipeline {
     environment {
         OTP_CDO_DATETIME = "${new Date().format("yyyyMMddHHmm")}"
+        TOKEN = "squ_179c8593c6585eead75c9f334748f9d855fe4836"
     }
     options {
         timeout(time: 10, unit: "MINUTES")
         buildDiscarder(logRotator(daysToKeepStr: "5", artifactDaysToKeepStr: "5"))
         timestamps()
     }
-    agent {
-        label "cdo-python-agent"
-    }
+    agent any
     parameters {
         string(name: 'PROJECT_NAMES', defaultValue: '', description: 'Required. The SonarQube project(s) name.')
         string(name: 'RO_EMAILS', defaultValue: '', description: 'List of email addresses of the users to add to project(s) with RO permission. Separated by comma or space.')
@@ -22,14 +21,6 @@ pipeline {
     stages {
         stage("Prepare") {
             steps {
-                sh """
-mkdir -p ~/.config/pip/
-echo "[global]
-index = https://otpnexus.hu/repository/anonymous-proxy-py-pypi.org/pypi
-index-url = https://otpnexus.hu/repository/anonymous-proxy-py-pypi.org/simple
-timeout = 10
-retries = 1" > ~/.config/pip/pip.conf
-                """
                 sh "pip install -r requirements.txt"
             }
         }
@@ -52,11 +43,7 @@ retries = 1" > ~/.config/pip/pip.conf
                     if(params.RW_GROUPS){
                         extraArgs.add("--rw_groups \"${params.RW_GROUPS}\"")
                     }
-                    withCredentials( [string(credentialsId: "SONARQUBE_ONBOARDING", variable: 'TOKEN')]) {
-                        sh('python3 bin/sonar.py $TOKEN ' + """ \
-                                ${extraArgs.join(' ')}"""
-                        )
-                    }
+                    sh 'python3 main.py $TOKEN' + """ ${extraArgs.join(' ')}"""
                 }
             }
         }
