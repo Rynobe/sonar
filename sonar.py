@@ -40,7 +40,7 @@ class Sonarqube:
         print("Start permission settings for group(s).")
         group_endpoint_url = "api/permissions/add_group"
         if permission == "ro":
-            for access in self.RW_PERMISSION:
+            for access in self.RO_PERMISSION:
                 for group in group_names:
                     for project in projects_name:
                         requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
