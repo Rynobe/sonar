@@ -135,7 +135,7 @@ class Sonarqube:
     def get_group_names_with_correct_case(self, groups_name: List[str]) -> List[str]:
         correct_groups = []
         for group_name in set(groups_name):
-            for sonar_group in self.all_sonar_projects:
+            for sonar_group in self.all_sonar_groups:
                 if sonar_group['name'].lower() == group_name.lower():
                     correct_groups.append(sonar_group['name'])
                     break
