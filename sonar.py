@@ -24,6 +24,7 @@ class Sonarqube:
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
         print("Start permission settings for user(s).")
+        print(user_names)
         user_endpoint_url = "api/permissions/add_user"
         if permission == "ro":
             for access in self.RO_PERMISSION:
@@ -38,6 +39,7 @@ class Sonarqube:
 
     def set_group_permission(self, group_names: List[str], projects_name: List[str], permission: str):
         print("Start permission settings for group(s).")
+        print(group_names)
         group_endpoint_url = "api/permissions/add_group"
         if permission == "ro":
             for access in self.RO_PERMISSION:
