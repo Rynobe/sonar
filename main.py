@@ -49,6 +49,11 @@ def set_permission():
             ro_users = sonarqube.get_user_login_names(ro_users)
             rw_users = sonarqube.get_user_login_names(rw_users)
             projects = sonarqube.get_project_names(projects)
+            
+            if rw_users:
+                sonarqube.set_user_permission(rw_users,projects,"rw")
+            else:
+                sonarqube.set_user_permission(ro_users,projects,"ro")
 
             print('\n\nCopy the logs below into the snow ticket as a comment\n')
             print('----------------------------------------------')
