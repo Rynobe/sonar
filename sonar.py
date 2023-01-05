@@ -123,3 +123,6 @@ class Sonarqube:
                     prj_names.append(sonar_user['key'])
                 break
         return prj_names
+    
+    def get_logs_for_snow_ticket(self):
+        return self._logs_for_snow_ticket
