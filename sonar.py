@@ -90,7 +90,6 @@ class Sonarqube:
 
     def validate_groups_case_insensitive(self, groups_name: List[str]) -> None:
         print('\n\nStarting group validations')
-        print(self.all_sonar_groups)
         invalid_groups = []
         for group_names in set(groups_name):
             print(f'Validating groups: {group_names} ', end='')
