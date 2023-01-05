@@ -12,7 +12,7 @@ pipeline {
     }
     agent any
     parameters {
-        string(name: 'PROJECTS_NAMES', defaultValue: '', description: 'Required. The SonarQube project(s) name.')
+        string(name: 'PROJECT_NAMES', defaultValue: '', description: 'Required. The SonarQube project(s) name.')
         string(name: 'RO_EMAILS', defaultValue: '', description: 'List of email addresses of the users to add to the RO group. Separated by comma or space.')
         string(name: 'RW_EMAILS', defaultValue: '', description: 'List of email addresses of the users to add to the RW group. Separated by comma or space.')
     }
@@ -26,8 +26,8 @@ pipeline {
             steps {
                 script{
                     def extraArgs = []
-                    if(params.PROJECTS_NAMES){
-                        extraArgs.add("--projects_names \"${PROJECTS_NAMES}\"")
+                    if(params.PROJECT_NAMES){
+                        extraArgs.add("--project_names \"${PROJECT_NAMES}\"")
                     }
                     if(params.RO_EMAILS){
                         extraArgs.add("--ro_emails \"${params.RO_EMAILS}\"")
