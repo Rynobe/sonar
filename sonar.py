@@ -23,16 +23,15 @@ class Sonarqube:
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
         print("Start permission settings")
-        print(permission)
-        print(user_names)
-        print(projects_name)
         user_endpoint_url = "api/permissions/add_user"
         if permission == "ro":
             for access in self.RO_PERMISSION:
-                requests.post(f'{self._url}{user_endpoint_url}?login={user_names}&permission={access}&projectKey={projects_name}', auth=self._auth)
+                for user in user_names:
+                    for project in projects_name:
+                        requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
         else:
             for access in self.RW_PERMISSION:
-                requests.post(f'{self._url}{user_endpoint_url}?login={user_names}&permission={access}&projectKey={projects_name}', auth=self._auth)
+                requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
 
     def set_group_permission(self, gnames, projectKeys):
         group_endpoint_url = "api/permissions/add_group"
