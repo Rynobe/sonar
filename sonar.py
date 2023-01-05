@@ -23,8 +23,7 @@ class Sonarqube:
         self.all_sonar_groups = [group for group in self.all_sonar_groups if 'name' in group]
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
-        print("Start permission settings for user(s).")
-        print(f'{permission}: {user_names}')
+        print(f"Start {permission} permission settings for user(s).\n{user_names}")
         user_endpoint_url = "api/permissions/add_user"
         if permission == "ro":
             for access in self.RO_PERMISSION:
@@ -38,8 +37,7 @@ class Sonarqube:
                         requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
 
     def set_group_permission(self, group_names: List[str], projects_name: List[str], permission: str):
-        print("Start permission settings for group(s).")
-        print(f'{permission}: {group_names}')
+        print(f"Start {permission} permission settings for user(s).\n{group_names}")
         group_endpoint_url = "api/permissions/add_group"
         if permission == "ro":
             for access in self.RO_PERMISSION:
