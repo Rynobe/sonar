@@ -36,9 +36,7 @@ pipeline {
                         extraArgs.add("--rw_emails \"${params.RW_EMAILS}\"")
                     }
                     
-                    sh('python3 main.py $TOKEN ' + """ \
-                                ${extraArgs.join(' ')}"""
-                        )
+                    sh 'python3 main.py $TOKEN' + """ ${extraArgs.join(' ')}"""
                 }
             }
         }
