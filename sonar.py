@@ -43,12 +43,12 @@ class Sonarqube:
             for access in self.RW_PERMISSION:
                 for group in group_names:
                     for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={project}', auth=self._auth)
+                        requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
         else:
             for access in self.RW_PERMISSION:
                 for group in group_names:
                     for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={project}', auth=self._auth)
+                        requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
     
     def validate_projects_case_insensitive(self, projects_name: List[str]) -> None:
         print('\n\nStarting project validations')
