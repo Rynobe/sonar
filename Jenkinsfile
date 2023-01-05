@@ -27,7 +27,7 @@ pipeline {
                 script{
                     def extraArgs = []
                     if(params.PROJECTS_NAMES){
-                        extraArgs.add("--project_names \"${PROJECTS_NAMES}\"")
+                        extraArgs.add("--projects_names \"${PROJECTS_NAMES}\"")
                     }
                     if(params.RO_EMAILS){
                         extraArgs.add("--ro_emails \"${params.RO_EMAILS}\"")
