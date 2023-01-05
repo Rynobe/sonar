@@ -56,10 +56,6 @@ def set_permission():
             else:
                 sonarqube.set_user_permission(ro_users,projects,"ro")
 
-            print('\n\nCopy the logs below into the snow ticket as a comment\n')
-            print('----------------------------------------------')
-            print(sonarqube.get_logs_for_snow_ticket())
-            print('----------------------------------------------')
     except Exception as e:
         print('Error during set permissions.')
         print(e)
