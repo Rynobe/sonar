@@ -19,6 +19,8 @@ class Sonarqube:
         self.all_sonar_users = [user for user in self.all_sonar_users if 'email' in user]
         self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
         self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
+        self.all_sonar_groups = self._sonarqube.user_groups.search_user_groups()['groups']
+        self.all_sonar_groups = [group for group in self.all_sonar_projects if 'name' in group]
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
         print("Start permission settings for user(s).")
@@ -41,12 +43,12 @@ class Sonarqube:
             for access in self.RW_PERMISSION:
                 for group in group_names:
                     for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={projects_name}', auth=self._auth)
+                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={project}', auth=self._auth)
         else:
             for access in self.RW_PERMISSION:
                 for group in group_names:
                     for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={projects_name}', auth=self._auth)
+                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={project}', auth=self._auth)
     
     def validate_projects_case_insensitive(self, projects_name: List[str]) -> None:
         print('\n\nStarting project validations')
@@ -86,6 +88,25 @@ class Sonarqube:
         else:
             print('User validation successful.')
 
+    def validate_groups_case_insensitive(self, groups_name: List[str]) -> None:
+        print('\n\nStarting group validations')
+        invalid_groups = []
+        for group_names in set(groups_name):
+            print(f'Validating groups: {group_names} ', end='')
+            for sonar_groups in self.all_sonar_groups:
+                if sonar_groups['name'].lower() == group_names.lower():
+                    print('\Group found.')
+                    break
+            else:
+                print('\Group not found.')
+                invalid_groups.append(group_names)
+
+        if invalid_groups:
+            print(f'ERROR: The following groups are not found in SonarQube: {invalid_groups}')
+            raise sq_exceptions.ValidationError("Group validation error.")
+        else:
+            print(f'Group validation successful.')
+
     def get_user_emails_with_correct_case(self, user_emails: List[str]) -> List[str]:
         correct_emails = []
         for user_email in set(user_emails):
@@ -110,6 +131,18 @@ class Sonarqube:
                 raise Exception(f'Could not get project name with correct case: {project_name}')
         return correct_projects
 
+    def get_group_names_with_correct_case(self, groups_name: List[str]) -> List[str]:
+        correct_groups = []
+        for group_name in set(groups_name):
+            for sonar_group in self.all_sonar_projects:
+                if sonar_group['name'].lower() == group_name.lower():
+                    correct_groups.append(sonar_group['name'])
+                    break
+            else:
+                print(f'Could not get group name with correct case: {group_name}')
+                raise Exception(f'Could not get group name with correct case: {group_name}')
+        return correct_groups
+
     def get_user_login_names(self, user_emails: List[str]) -> List[str]:
         login_names = []
         for user_email in set(user_emails):
@@ -123,9 +156,19 @@ class Sonarqube:
     def get_project_names(self, projects_name: List[str]) -> List[str]:
         prj_names = []
         for prj_name in set(projects_name):
-            sonar_users = self._sonarqube.projects.search_projects(q=prj_name)['components']
-            for sonar_user in sonar_users:
-                if sonar_user['key'] == prj_name:
-                    prj_names.append(sonar_user['key'])
+            sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']
+            for sonar_project in sonar_projects:
+                if sonar_project['key'] == prj_name:
+                    prj_names.append(sonar_project['key'])
                 break
         return prj_names
+
+    def get_group_names(self, groups_name: List[str]) -> List[str]:
+        group_names = []
+        for group_name in set(groups_name):
+            sonar_groups = self._sonarqube.user_groups.search_user_groups(q=group_name)['groups']
+            for sonar_group in sonar_groups:
+                if sonar_group['name'] == group_name:
+                    group_names.append(sonar_group['name'])
+                break
+        return group_names
