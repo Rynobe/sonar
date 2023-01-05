@@ -5,10 +5,6 @@ from requests.auth import HTTPBasicAuth
 from typing import List
 
 
-
-token = "squ_179c8593c6585eead75c9f334748f9d855fe4836"
-
-
 class Sonarqube:
     RO_PERMISSION = ['user', 'codeviewer']
     RW_PERMISSION = ['user', 'codeviewer', 'scan']
@@ -26,6 +22,10 @@ class Sonarqube:
         self._logs_for_snow_ticket = ''
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
+        print("Start permission settings")
+        print(permission)
+        print(user_names)
+        print(projects_name)
         user_endpoint_url = "api/permissions/add_user"
         if permission == "ro":
             for access in self.RO_PERMISSION:
