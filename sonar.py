@@ -20,7 +20,7 @@ class Sonarqube:
         self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
         self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
         self.all_sonar_groups = self._sonarqube.user_groups.search_user_groups()['groups']
-        self.all_sonar_groups = [group for group in self.all_sonar_projects if 'name' in group]
+        self.all_sonar_groups = [group for group in self.all_sonar_groups if 'name' in group]
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
         print("Start permission settings for user(s).")
