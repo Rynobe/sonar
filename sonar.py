@@ -35,6 +35,7 @@ class Sonarqube:
                 for user in user_names:
                     for project in projects_name:
                         requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
+        print("Setting user permission successful.")
 
     def set_group_permission(self, group_names: List[str], projects_name: List[str], permission: str):
         print(f"Start {permission} permission settings for group(s): {group_names}")
@@ -49,6 +50,7 @@ class Sonarqube:
                 for group in group_names:
                     for project in projects_name:
                         requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
+        print("Setting group permission successful.")
     
     def validate_projects_case_insensitive(self, projects_name: List[str]) -> None:
         print('\n\nStarting project validations')
