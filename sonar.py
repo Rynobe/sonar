@@ -25,13 +25,14 @@ class Sonarqube:
         self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
         self._logs_for_snow_ticket = ''
 
-    def set_user_permission(self, unames, projectKeys):
+    def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
         user_endpoint_url = "api/permissions/add_user"
-        for access in self.RO_PERMISSION:
-            requests.post(f'{self._url}{user_endpoint_url}?login={unames}&permission={access}&projectKey={projectKeys}', auth=self._auth)
-
-        for access in self.RW_PERMISSION:
-            requests.post(f'{self._url}{user_endpoint_url}?login={unames}&permission={access}&projectKey={projectKeys}', auth=self._auth)
+        if permission == "ro":
+            for access in self.RO_PERMISSION:
+                requests.post(f'{self._url}{user_endpoint_url}?login={user_names}&permission={access}&projectKey={projects_name}', auth=self._auth)
+        else:
+            for access in self.RW_PERMISSION:
+                requests.post(f'{self._url}{user_endpoint_url}?login={user_names}&permission={access}&projectKey={projects_name}', auth=self._auth)
 
     def set_group_permission(self, gnames, projectKeys):
         group_endpoint_url = "api/permissions/add_group"
