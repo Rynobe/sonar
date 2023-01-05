@@ -36,9 +36,9 @@ def set_permission():
 
     # Set Permission
     try:
-        sonarqube_env = SONARQUBE_ENV_CONFIG['test']
-        for sonarqube_env in sonarqube_envs:
-            sonarqube = Sonarqube(token=args.sonarqube_auth_token, sonarqube_url=sonarqube_env['url'])
+        env = SONARQUBE_ENV_CONFIG['test']
+        for sonarqube_env in env:
+            sonarqube = Sonarqube(token=args.sonarqube_auth_token, sonarqube_url=env['url'])
             sonarqube.validate_users_case_insensitive(rw_users + ro_users)
             sonarqube.validate_projects_case_insensitive(projects)
             
