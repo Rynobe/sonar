@@ -36,7 +36,7 @@ pipeline {
                         extraArgs.add("--rw_emails \"${params.RW_EMAILS}\"")
                     }
                     
-                    sh('python3 sonarqube.py $TOKEN ' + """ \
+                    sh('python3 main.py $TOKEN ' + """ \
                                 ${extraArgs.join(' ')}"""
                         )
                 }
