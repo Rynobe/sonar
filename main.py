@@ -66,11 +66,11 @@ def set_permission():
                 sonarqube.set_user_permission(rw_users,projects,"ro")
             if rw_users:
                 sonarqube.set_user_permission(ro_users,projects,"rw")
-            
             if ro_groups:
                 sonarqube.set_group_permission(ro_groups,projects,"ro")
             if rw_groups:
                 sonarqube.set_group_permission(rw_groups,projects,"rw")
+                
     except Exception as e:
         print('Error during set permissions.')
         print(e)
