@@ -19,10 +19,9 @@ class Sonarqube:
         self.all_sonar_users = [user for user in self.all_sonar_users if 'email' in user]
         self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
         self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
-        self._logs_for_snow_ticket = ''
 
     def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
-        print("Start permission settings")
+        print("Start permission settings for user(s).")
         user_endpoint_url = "api/permissions/add_user"
         if permission == "ro":
             for access in self.RO_PERMISSION:
@@ -31,15 +30,23 @@ class Sonarqube:
                         requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
         else:
             for access in self.RW_PERMISSION:
-                requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
+                for user in user_names:
+                    for project in projects_name:
+                        requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
 
-    def set_group_permission(self, gnames, projectKeys):
+    def set_group_permission(self, group_names: List[str], projects_name: List[str], permission: str):
+        print("Start permission settings for group(s).")
         group_endpoint_url = "api/permissions/add_group"
-        for access in self.RW_PERMISSION:
-            requests.post(f'{self._url}{group_endpoint_url}?login={gnames}&permission={access}&projectKey={projectKeys}', auth=self._auth)
-
-        for access in self.RW_PERMISSION:
-            requests.post(f'{self._url}{group_endpoint_url}?login={gnames}&permission={access}&projectKey={projectKeys}', auth=self._auth)
+        if permission == "ro":
+            for access in self.RW_PERMISSION:
+                for group in group_names:
+                    for project in projects_name:
+                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={projects_name}', auth=self._auth)
+        else:
+            for access in self.RW_PERMISSION:
+                for group in group_names:
+                    for project in projects_name:
+                        requests.post(f'{self._url}{group_endpoint_url}?login={group}&permission={access}&projectKey={projects_name}', auth=self._auth)
     
     def validate_projects_case_insensitive(self, projects_name: List[str]) -> None:
         print('\n\nStarting project validations')
@@ -122,6 +129,3 @@ class Sonarqube:
                     prj_names.append(sonar_user['key'])
                 break
         return prj_names
-    
-    def get_logs_for_snow_ticket(self):
-        return self._logs_for_snow_ticket
