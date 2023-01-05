@@ -3,6 +3,7 @@
 pipeline {
     environment {
         OTP_CDO_DATETIME = "${new Date().format("yyyyMMddHHmm")}"
+        TOKEN = "squ_179c8593c6585eead75c9f334748f9d855fe4836"
     }
     options {
         timeout(time: 10, unit: "MINUTES")
