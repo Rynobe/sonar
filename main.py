@@ -28,7 +28,7 @@ def set_permission():
         print('Parsing ro users. ', end='')
         ro_users = get_parsed_list(args.ro_emails)
         print('Parsing project(s) name. ', end='')
-        projects = get_parsed_list(args.projects_name)
+        projects = get_parsed_list(args.project_names)
     except Exception as e:
         print('Error when parsing inputs.')
         print(e)
