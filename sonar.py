@@ -18,7 +18,7 @@ class Sonarqube:
         self.all_sonar_users = list(self._sonarqube.users.search_users()['users'])
         self.all_sonar_users = [user for user in self.all_sonar_users if 'email' in user]
         self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
-        self.all_sonar_projects = [project for project in self.all_sonar_projects if 'name' in project]
+        self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
         self.all_sonar_groups = self._sonarqube.user_groups.search_user_groups()['groups']
         self.all_sonar_groups = [group for group in self.all_sonar_groups if 'name' in group]
 
@@ -126,7 +126,7 @@ class Sonarqube:
         for project_name in set(projects_name):
             for sonar_project in self.all_sonar_projects:
                 if sonar_project['name'].lower() == project_name.lower():
-                    correct_projects.append(sonar_project['name'])
+                    correct_projects.append(sonar_project['key'])
                     break
             else:
                 print(f'Could not get project name with correct case: {project_name}')
@@ -161,7 +161,7 @@ class Sonarqube:
             sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']
             for sonar_project in sonar_projects:
                 if sonar_project['name'] == prj_name:
-                    prj_names.append(sonar_project['name'])
+                    prj_names.append(sonar_project['key'])
                 break
         return prj_names
 
