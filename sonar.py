@@ -60,8 +60,6 @@ class Sonarqube:
             for sonar_projects in self.all_sonar_projects:
                 if sonar_projects['name'].lower() == project_names.lower():
                     print('\nProject found.')
-                    print(sonar_projects['key'])
-                    print(sonar_projects['name'])
                     break
             else:
                 print('\nProject not found.')
@@ -129,7 +127,7 @@ class Sonarqube:
             for sonar_project in self.all_sonar_projects:
                 if sonar_project['name'].lower() == project_name.lower():
                     correct_projects.append(sonar_project['key'])
-                    print(sonar_project['key'])
+                    print("correct case: " + sonar_project['key'])
                     break
             else:
                 print(f'Could not get project name with correct case: {project_name}')
@@ -165,7 +163,7 @@ class Sonarqube:
             for sonar_project in sonar_projects:
                 if sonar_project['name'] == prj_name:
                     prj_names.append(sonar_project['key'])
-                    print(sonar_project['key'])
+                    print("get project names: " + sonar_project['key'])
                 break
         return prj_names
 
