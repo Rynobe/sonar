@@ -18,7 +18,7 @@ class Sonarqube:
         self.all_sonar_users = list(self._sonarqube.users.search_users()['users'])
         self.all_sonar_users = [user for user in self.all_sonar_users if 'email' in user]
         self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
-        self.all_sonar_projects = [project for project in self.all_sonar_projects if 'refKey' in project]
+        self.all_sonar_projects = [project for project in self.all_sonar_projects if 'name' in project]
         self.all_sonar_groups = self._sonarqube.user_groups.search_user_groups()['groups']
         self.all_sonar_groups = [group for group in self.all_sonar_groups if 'name' in group]
 
@@ -58,7 +58,7 @@ class Sonarqube:
         for project_names in set(projects_name):
             print(f'Validating projects: {project_names} ', end='')
             for sonar_projects in self.all_sonar_projects:
-                if sonar_projects['refKey'].lower() == project_names.lower():
+                if sonar_projects['name'].lower() == project_names.lower():
                     print('\nProject found.')
                     break
             else:
