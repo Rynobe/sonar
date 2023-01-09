@@ -127,7 +127,6 @@ class Sonarqube:
             for sonar_project in self.all_sonar_projects:
                 if sonar_project['name'].lower() == project_name.lower():
                     correct_projects.append(sonar_project['key'])
-                    print("correct case: " + sonar_project['key'])
                     break
             else:
                 print(f'Could not get project name with correct case: {project_name}')
@@ -158,15 +157,11 @@ class Sonarqube:
 
     def get_project_names(self, projects_name: List[str]) -> List[str]:
         prj_names = []
-        print("get project names")
-        print(projects_name)
         for prj_name in set(projects_name):
             sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']
-            print(sonar_projects)
             for sonar_project in sonar_projects:
-                if sonar_project['name'] == prj_name:
+                if sonar_project['key'] == prj_name:
                     prj_names.append(sonar_project['key'])
-                    print("get project names: " + sonar_project['key'])
                 break
         return prj_names
 
