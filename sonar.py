@@ -161,7 +161,7 @@ class Sonarqube:
         print("get project names")
         print(projects_name)
         for prj_name in set(projects_name):
-            sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']ű
+            sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']
             print(sonar_projects)
             for sonar_project in sonar_projects:
                 if sonar_project['name'] == prj_name:
