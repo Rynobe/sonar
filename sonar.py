@@ -158,8 +158,11 @@ class Sonarqube:
 
     def get_project_names(self, projects_name: List[str]) -> List[str]:
         prj_names = []
+        print("get project names")
+        print(projects_name)
         for prj_name in set(projects_name):
-            sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']
+            sonar_projects = self._sonarqube.projects.search_projects(q=prj_name)['components']ű
+            print(sonar_projects)
             for sonar_project in sonar_projects:
                 if sonar_project['name'] == prj_name:
                     prj_names.append(sonar_project['key'])
