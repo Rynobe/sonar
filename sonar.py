@@ -60,8 +60,8 @@ class Sonarqube:
             for sonar_projects in self.all_sonar_projects:
                 if sonar_projects['name'].lower() == project_names.lower():
                     print('\nProject found.')
-                    print(sonar_project['key'])
-                    print(sonar_project['name'])
+                    print(sonar_projects['key'])
+                    print(sonar_projects['name'])
                     break
             else:
                 print('\nProject not found.')
