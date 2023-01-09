@@ -63,9 +63,9 @@ def set_permission():
             projects = sonarqube.get_project_names(projects)
             
             if ro_users:
-                sonarqube.set_user_permission(rw_users,projects,"ro")
+                sonarqube.set_user_permission(ro_users,projects,"ro")
             if rw_users:
-                sonarqube.set_user_permission(ro_users,projects,"rw")
+                sonarqube.set_user_permission(rw_users,projects,"rw")
             if ro_groups:
                 sonarqube.set_group_permission(ro_groups,projects,"ro")
             if rw_groups:
