@@ -15,41 +15,27 @@ class Sonarqube:
         self._url = url
         print('Credential validity: ', end='')
         print(self._sonarqube.auth.check_credentials())
-        self.all_sonar_users = list(self._sonarqube.users.search_users()['users'])
-        self.all_sonar_users = [user for user in self.all_sonar_users if 'email' in user]
-        self.all_sonar_projects = self._sonarqube.projects.search_projects()['components']
-        self.all_sonar_projects = [project for project in self.all_sonar_projects if 'key' in project]
-        self.all_sonar_groups = self._sonarqube.user_groups.search_user_groups()['groups']
-        self.all_sonar_groups = [group for group in self.all_sonar_groups if 'name' in group]
+        self.all_sonar_users = [user for user in list(self._sonarqube.users.search_users()['users']) if 'email' in user]
+        self.all_sonar_projects = [project for project in self._sonarqube.projects.search_projects()['components'] if 'key' in project]
+        self.all_sonar_groups = [group for group in self._sonarqube.user_groups.search_user_groups()['groups'] if 'name' in group]
 
-    def set_user_permission(self, user_names: List[str], projects_name: List[str], permission: str):
-        print(f"Start {permission} permission settings for user(s): {user_names}")
+    def set_user_permission(self, user_names: List[str], projects_name: List[str], permissions: List[str]):
+        print(f"Start permission settings for user(s): {user_names}")
         user_endpoint_url = "api/permissions/add_user"
-        if permission == "ro":
-            for access in self.RO_PERMISSION:
-                for user in user_names:
-                    for project in projects_name:
-                        requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
-        else:
-            for access in self.RW_PERMISSION:
-                for user in user_names:
-                    for project in projects_name:
-                        requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
+        for access in permissions:
+            for user in user_names:
+                for project in projects_name:
+                    requests.post(f'{self._url}{user_endpoint_url}?login={user}&permission={access}&projectKey={project}', auth=self._auth)
         print("Setting user permission successful.")
 
-    def set_group_permission(self, group_names: List[str], projects_name: List[str], permission: str):
+    def set_group_permission(self, group_names: List[str], projects_name: List[str], permissions: List[str]):
         print(f"Start {permission} permission settings for group(s): {group_names}")
         group_endpoint_url = "api/permissions/add_group"
-        if permission == "ro":
-            for access in self.RO_PERMISSION:
-                for group in group_names:
-                    for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
-        else:
-            for access in self.RW_PERMISSION:
-                for group in group_names:
-                    for project in projects_name:
-                        requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
+        for access in permissions:
+            for group in group_names:
+                for project in projects_name:
+                    requests.post(f'{self._url}{group_endpoint_url}?groupName={group}&permission={access}&projectKey={project}', auth=self._auth)
+
         print("Setting group permission successful.")
     
     def validate_projects_case_insensitive(self, projects_name: List[str]) -> None:
