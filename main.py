@@ -19,6 +19,8 @@ parser.add_argument('--ro_groups', type=str, help=f'List of groups to add to pro
 parser.add_argument('--rw_groups', type=str, help=f'List of groups to add to project(s) with RW permission. Separated by comma or space.')
 
 args = parser.parse_args()
+if not args.project_names:
+    parser.error('At least one of --project_names must be give.')
 
 def set_permission():
 
