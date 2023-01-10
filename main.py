@@ -20,7 +20,10 @@ parser.add_argument('--rw_groups', type=str, help=f'List of groups to add to pro
 
 args = parser.parse_args()
 if not args.project_names:
-    parser.error('At least one of --project_names must be give.')
+    parser.error('At least one --project_names must be given!')
+    
+if not args.ro_emails and not args.rw_emails and not args.ro_groups and not args.rw_groups:
+    parser.error('At least one user email must be given!')
 
 def set_permission():
 
