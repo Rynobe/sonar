@@ -29,7 +29,7 @@ class Sonarqube:
         print("Setting user permission successful.")
 
     def set_group_permission(self, group_names: List[str], projects_name: List[str], permissions: List[str]):
-        print(f"Start {permission} permission settings for group(s): {group_names}")
+        print(f"Start permission settings for group(s): {group_names}")
         group_endpoint_url = "api/permissions/add_group"
         for access in permissions:
             for group in group_names:
